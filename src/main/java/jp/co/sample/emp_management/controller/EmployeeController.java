@@ -68,13 +68,8 @@ public class EmployeeController {
 	@RequestMapping("/showDetail")
 	public String showDetail(String id, Model model) {
 		Employee employee = employeeService.showDetail(Integer.parseInt(id));
-		//入社日の表示を変更するフォーマット
-		SimpleDateFormat format2 = new SimpleDateFormat("yyyy年MM月dd日");
-		String hireDate = format2.format(employee.getHireDate());
-		
 		
 		model.addAttribute("employee", employee);
-		model.addAttribute("hireDate", hireDate);
 		
 		return "employee/detail";
 	}
