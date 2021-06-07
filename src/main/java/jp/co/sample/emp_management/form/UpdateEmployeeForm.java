@@ -5,7 +5,7 @@ import javax.validation.constraints.Pattern;
 /**
  * 従業員情報更新時に使用するフォーム.
  * 
- * @author igamasayuki
+ * @author daiki.takayama
  * 
  */
 public class UpdateEmployeeForm {

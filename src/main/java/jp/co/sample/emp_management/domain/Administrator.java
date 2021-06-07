@@ -3,7 +3,7 @@ package jp.co.sample.emp_management.domain;
 /**
  * 管理者情報を表すドメイン.
  * 
- * @author igamasayuki
+ * @author daiki.takayama
  * 
  */
 public class Administrator {

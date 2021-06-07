@@ -12,7 +12,7 @@ import jp.co.sample.emp_management.repository.EmployeeRepository;
 /**
  * 従業員情報を操作するサービス.
  * 
- * @author igamasayuki
+ * @author daiki.takayama
  *
  */
 @Service

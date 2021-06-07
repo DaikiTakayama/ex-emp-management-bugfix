@@ -3,7 +3,7 @@ package jp.co.sample.emp_management.form;
 /**
  * ログイン時に使用するフォーム.
  * 
- * @author igamasayuki
+ * @author daiki.takayama
  * 
  */
 public class LoginForm {

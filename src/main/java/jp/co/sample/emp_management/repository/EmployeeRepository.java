@@ -15,7 +15,7 @@ import jp.co.sample.emp_management.domain.Employee;
 /**
  * employeesテーブルを操作するリポジトリ.
  * 
- * @author igamasayuki
+ * @author daiki.takayama
  * 
  */
 @Repository

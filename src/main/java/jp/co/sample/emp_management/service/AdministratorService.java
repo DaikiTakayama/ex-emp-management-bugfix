@@ -10,7 +10,7 @@ import jp.co.sample.emp_management.repository.AdministratorRepository;
 /**
  * 管理者情報を操作するサービス.
  * 
- * @author igamasayuki
+ * @author daiki.takayama
  *
  */
 @Service

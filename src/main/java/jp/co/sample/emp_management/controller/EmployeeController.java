@@ -17,7 +17,7 @@ import jp.co.sample.emp_management.service.EmployeeService;
 /**
  * 従業員情報を操作するコントローラー.
  * 
- * @author igamasayuki
+ * @author daiki.takayama
  *
  */
 @Controller
