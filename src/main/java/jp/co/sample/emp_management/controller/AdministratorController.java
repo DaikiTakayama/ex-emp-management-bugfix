@@ -90,6 +90,13 @@ public class AdministratorController {
 			return toInsert();
 		}
 		
+		//(1-5) 確認用パスワードとパスワードの入力値が正しいかチェック
+		if(!(form.getPassword().equals(form.getCheckPassword()))) {
+			result.rejectValue("password", null, "パスワードと確認用パスワードが等しくありません");
+			result.rejectValue("checkPassword", null, "");
+			return toInsert();
+		}
+		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
