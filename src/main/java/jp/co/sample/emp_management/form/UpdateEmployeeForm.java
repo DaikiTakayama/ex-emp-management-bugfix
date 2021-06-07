@@ -1,5 +1,6 @@
 package jp.co.sample.emp_management.form;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
