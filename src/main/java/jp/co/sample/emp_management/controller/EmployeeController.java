@@ -1,5 +1,6 @@
 package jp.co.sample.emp_management.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,9 @@ public class EmployeeController {
 	@RequestMapping("/showDetail")
 	public String showDetail(String id, Model model) {
 		Employee employee = employeeService.showDetail(Integer.parseInt(id));
+		
 		model.addAttribute("employee", employee);
+		
 		return "employee/detail";
 	}
 	

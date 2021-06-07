@@ -79,6 +79,22 @@
 									</div>
 								</div>
 							</div>
+							
+							<!-- パスワード -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="passwaord">
+											パスワード:
+										</label>
+										<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-messages">
+											パスワードを入力してください
+										</label>
+										<input type="password" name="password" id="password" class="form-control" placeholder="password"
+											 th:field="*{password}" th:errorclass="error-input" value="xxxxxxxx">
+									</div>
+								</div>
+							</div>
 							<!-- 登録ボタン -->
 							<div class="form-group">
 								<div class="row">
