@@ -31,11 +31,11 @@
 
 <!-- ここにモックのform要素を貼り付けます -->
 
-					<form method="post" action="login.html" th:action="@{/insert}" th:object="${insertAdministratorForm}">
+					<form method="post" action="login.html" th:action="@{/insert}" th:object="${insertAdministratorForm}" >
 						<fieldset>
 							<legend>管理者登録<br>(システムにログインできる管理者を登録します)</legend>
 							<!-- 氏名 -->
-							<div class="form-group">
+							<div class="form-group" >
 								<div class="row">
 									<div class="col-sm-12">
 										<label for="name">
