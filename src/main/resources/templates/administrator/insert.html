@@ -56,8 +56,11 @@
 										<label for="mailAddress">
 											メールアドレス:
 										</label>
-										<label th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" class="error-messages">
+										<label th:if="${#fields.hasErrors('mailAddress')}"  th:errors="*{mailAddress}" class="error-messages">
 											メールアドレスを入力してください
+										</label>
+										<label th:if="${fail}"  class="error-messages">
+											<span  th:text="${fail}"  class="error-messages"></span>
 										</label>
 										<input type="text" name="mailAddress" id="mailAddress" class="form-control" placeholder="yamada@mail.com"
 											 th:field="*{mailAddress}" th:errorclass="error-input" value="yamada@mail.com">
@@ -80,12 +83,12 @@
 								</div>
 							</div>
 							
-							<!-- パスワード -->
+							<!-- 確認用パスワード -->
 							<div class="form-group">
 								<div class="row">
 									<div class="col-sm-12">
 										<label for="passwaord">
-											パスワード:
+											確認用パスワード:
 										</label>
 										<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-messages">
 											パスワードを入力してください

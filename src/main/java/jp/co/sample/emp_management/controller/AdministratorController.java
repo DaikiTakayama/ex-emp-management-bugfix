@@ -84,6 +84,12 @@ public class AdministratorController {
 			return toInsert();
 		}
 		
+		//(1-3) メールアドレスが重複していた場合、登録画面へ戻る
+		if(administratorService.checkAdminByMailAddress(form.getMailAddress()) != null) {
+			result.rejectValue("mailAddress", "","このメールアドレスは既に登録されています");
+			return toInsert();
+		}
+		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
