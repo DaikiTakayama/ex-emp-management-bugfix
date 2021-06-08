@@ -56,6 +56,8 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/showList")
 	public String showList(String employeeName,Model model) {
+
+		
 		List<Employee> employeeList = null;
 
 		//検索欄が空欄だった場合
@@ -75,6 +77,9 @@ public class EmployeeController {
 		}
 		
 		//名前によるあいまい検索が成功した場合、その結果を表示
+
+
+		employeeList = employeeService.showListByLikeEmployeeName(employeeName);
 
 		model.addAttribute("employeeList",employeeList);
 		
