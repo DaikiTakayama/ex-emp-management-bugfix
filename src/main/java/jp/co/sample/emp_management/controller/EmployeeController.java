@@ -1,5 +1,6 @@
 package jp.co.sample.emp_management.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +94,29 @@ public class EmployeeController {
 		employee.setDependentsCount(form.getIntDependentsCount());
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
+	}
+	
+
+	/**
+	 * 従業員名のあいまい検索を結果を表示する.
+	 * 
+	 * @param employeeName 検索する従業員名
+	 * @param model リクエストフォーム
+	 * @return　従業員一覧を表示
+	 */
+	
+	@RequestMapping("/search")
+	public String search(String employeeName,Model model) {
+		List<Employee> employeeList = new ArrayList<>();
+		if(employeeName == null) {
+			employeeList = employeeService.showList();
+			model.addAttribute("employeeList",employeeList);
+			return "employee/list";
+		}
+		employeeList = employeeService.showListByLikeEmployeeName(employeeName);
+
+		System.out.println(employeeList);
+		model.addAttribute("employeeList",employeeList);
+		return "employee/list";
 	}
 }
