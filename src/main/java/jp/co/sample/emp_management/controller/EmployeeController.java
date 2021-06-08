@@ -56,17 +56,18 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/showList")
 	public String showList(String employeeName,Model model) {
-		List<Employee> employeeList = new ArrayList<>();
-		
-		//検索欄を使用していない場合、すべての従業員一覧を表示
-		if(employeeName == null) {
+		List<Employee> employeeList = null;
+
+		//検索欄が空欄だった場合
+		if(employeeName == null ) {
 			employeeList = employeeService.showList();
 			model.addAttribute("employeeList",employeeList);
 			return "employee/list";
 		}
 		
+		employeeList = employeeService.showListByLikeEmployeeName(employeeName);
 		//検索結果が見つからなかった場合
-		if(employeeList.size() == 0) {
+		if( employeeName != null  && employeeList.size() == 0) {
 			model.addAttribute("notFoundLikeName", "１件もありませんでした");
 			employeeList = employeeService.showList();
 			model.addAttribute("employeeList",employeeList);
@@ -74,7 +75,7 @@ public class EmployeeController {
 		}
 		
 		//名前によるあいまい検索が成功した場合、その結果を表示
-		employeeList = employeeService.showListByLikeEmployeeName(employeeName);
+
 		model.addAttribute("employeeList",employeeList);
 		
 		return "employee/list";

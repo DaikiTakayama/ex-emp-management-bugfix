@@ -71,10 +71,6 @@ public class EmployeeRepository {
 	
 
 		List<Employee> employeeList = template.query(sql, param,EMPLOYEE_ROW_MAPPER);
-		
-		if (employeeList.size() == 0) {
-			return null;
-		}
 
 		return employeeList;
 	}
