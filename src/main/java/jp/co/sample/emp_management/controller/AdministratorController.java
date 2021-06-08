@@ -84,10 +84,24 @@ public class AdministratorController {
 			return toInsert();
 		}
 		
+		//(1-3) メールアドレスが重複していた場合、登録画面へ戻る
+		if(administratorService.checkAdminByMailAddress(form.getMailAddress()) != null) {
+			result.rejectValue("mailAddress", "","このメールアドレスは既に登録されています");
+			return toInsert();
+		}
+		
+		//(1-5) 確認用パスワードとパスワードの入力値が正しいかチェック
+		if(!(form.getPassword().equals(form.getCheckPassword()))) {
+			result.rejectValue("password", null, "パスワードと確認用パスワードが等しくありません");
+			result.rejectValue("checkPassword", null, "");
+			return toInsert();
+		}
+		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
 		administratorService.insert(administrator);
+
 		return "redirect:/";
 	}
 
@@ -122,6 +136,9 @@ public class AdministratorController {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
 		}
+		
+		session.setAttribute("administratorName", administrator.getName());
+		
 		return "forward:/employee/showList";
 	}
 	
