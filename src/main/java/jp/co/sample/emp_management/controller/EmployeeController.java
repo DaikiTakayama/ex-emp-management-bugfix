@@ -44,13 +44,25 @@ public class EmployeeController {
 	/**
 	 * 従業員一覧画面を出力します.
 	 * 
+	 * 
+	 * @param employeeName 検索する従業員名
 	 * @param model モデル
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("/showList")
-	public String showList(Model model) {
-		List<Employee> employeeList = employeeService.showList();
-		model.addAttribute("employeeList", employeeList);
+	public String showList(String employeeName,Model model) {
+		List<Employee> employeeList = new ArrayList<>();
+		
+		//検索欄を使用していない場合、すべての従業員一覧を表示
+		if(employeeName == null) {
+			employeeList = employeeService.showList();
+			model.addAttribute("employeeList",employeeList);
+			return "employee/list";
+		}
+		
+		//名前によるあいまい検索が成功した場合、その結果を表示
+		employeeList = employeeService.showListByLikeEmployeeName(employeeName);
+		model.addAttribute("employeeList",employeeList);
 		return "employee/list";
 	}
 
@@ -96,27 +108,4 @@ public class EmployeeController {
 		return "redirect:/employee/showList";
 	}
 	
-
-	/**
-	 * 従業員名のあいまい検索を結果を表示する.
-	 * 
-	 * @param employeeName 検索する従業員名
-	 * @param model リクエストフォーム
-	 * @return　従業員一覧を表示
-	 */
-	
-	@RequestMapping("/search")
-	public String search(String employeeName,Model model) {
-		List<Employee> employeeList = new ArrayList<>();
-		if(employeeName == null) {
-			employeeList = employeeService.showList();
-			model.addAttribute("employeeList",employeeList);
-			return "employee/list";
-		}
-		employeeList = employeeService.showListByLikeEmployeeName(employeeName);
-
-		System.out.println(employeeList);
-		model.addAttribute("employeeList",employeeList);
-		return "employee/list";
-	}
 }
