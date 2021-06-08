@@ -60,9 +60,18 @@ public class EmployeeController {
 			return "employee/list";
 		}
 		
+		//検索結果が見つからなかった場合
+		if(employeeList.size() == 0) {
+			model.addAttribute("notFoundLikeName", "１件もありませんでした");
+			employeeList = employeeService.showList();
+			model.addAttribute("employeeList",employeeList);
+			return "employee/list";
+		}
+		
 		//名前によるあいまい検索が成功した場合、その結果を表示
 		employeeList = employeeService.showListByLikeEmployeeName(employeeName);
 		model.addAttribute("employeeList",employeeList);
+		
 		return "employee/list";
 	}
 
