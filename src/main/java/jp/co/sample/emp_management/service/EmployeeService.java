@@ -23,21 +23,19 @@ public class EmployeeService {
 	private EmployeeRepository employeeRepository;
 	
 	/**
-	 * 従業員情報を全件取得します.
-	 * 
-	 * @return　従業員情報一覧
-	 */
-	public List<Employee> showList() {
-		List<Employee> employeeList = employeeRepository.findAll();
-		return employeeList;
-	}
-	
-	/**
 	 * 名前のあいまい検索に該当する従業員情報を取得します.
 	 * 
+	 * 
+	 * @param name 検索する従業員名
 	 * @return　従業員情報一覧
 	 */
 	public List<Employee> showListByLikeEmployeeName(String name) {
+		
+		//検索欄が空であれば、すべての従業員情報を取得
+		if(name == null) {
+			List<Employee> employeeList =employeeRepository.findAll();
+			return employeeList;
+		}
 		List<Employee> employeeList = employeeRepository.findByLikeEmployeeName(name);
 		return employeeList;
 	}
