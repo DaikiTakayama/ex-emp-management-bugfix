@@ -2,6 +2,7 @@ package jp.co.sample.emp_management.repository;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -20,6 +21,8 @@ import jp.co.sample.emp_management.domain.Administrator;
  */
 @Repository
 public class AdministratorRepository {
+	
+
 
 	/**
 	 * Administratorオブジェクトを生成するローマッパー.
