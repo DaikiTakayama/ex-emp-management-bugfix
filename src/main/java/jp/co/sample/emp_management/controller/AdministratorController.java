@@ -79,6 +79,8 @@ public class AdministratorController {
 			RedirectAttributes redirectAttributes
 			) {
 		
+		
+		
 		//もしエラーが一つでもあれば管理者入力画面へ遷移
 		if(result.hasErrors()) {
 			return toInsert();
