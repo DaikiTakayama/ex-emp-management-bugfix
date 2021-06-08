@@ -28,6 +28,7 @@ import jp.co.sample.emp_management.service.EmployeeService;
 public class EmployeeController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Administrator.class);
+	
 
 	@Autowired
 	private EmployeeService employeeService;
@@ -41,6 +42,9 @@ public class EmployeeController {
 	public UpdateEmployeeForm setUpForm() {
 		return new UpdateEmployeeForm();
 	}
+	
+	
+
 
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員一覧を表示する
