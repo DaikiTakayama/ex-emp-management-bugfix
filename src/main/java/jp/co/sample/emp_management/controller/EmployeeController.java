@@ -2,6 +2,8 @@ package jp.co.sample.emp_management.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jp.co.sample.emp_management.domain.Administrator;
 import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
@@ -23,6 +26,8 @@ import jp.co.sample.emp_management.service.EmployeeService;
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(Administrator.class);
 
 	@Autowired
 	private EmployeeService employeeService;

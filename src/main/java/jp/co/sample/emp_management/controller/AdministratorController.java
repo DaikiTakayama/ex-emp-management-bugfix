@@ -2,6 +2,8 @@ package jp.co.sample.emp_management.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ import jp.co.sample.emp_management.service.AdministratorService;
 @Controller
 @RequestMapping("/")
 public class AdministratorController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdministratorController.class);
 
 	@Autowired
 	private AdministratorService administratorService;
