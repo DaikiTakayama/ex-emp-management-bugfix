@@ -47,6 +47,14 @@ public class EmployeeService {
 		return employeeList;
 	}
 	
+	/**
+	 * 従業員情報をページングするメソッド
+	 * 
+	 * @param page 表示するページ
+	 * @param size ページの数
+	 * @param employeeList	表示する従業員情報
+	 * @return
+	 */
 	public Page<Employee> showPaging(int page,int size,List<Employee> employeeList){
 		page--;
 	    int cnt = page * size;
@@ -59,6 +67,7 @@ public class EmployeeService {
 		Page<Employee> employeePage =new PageImpl<>(pagingEmployeeList,PageRequest.of(page,size),employeeList.size());
 		return employeePage;
 	}
+	
 	
 	/**
 	 * 従業員情報を取得します.
