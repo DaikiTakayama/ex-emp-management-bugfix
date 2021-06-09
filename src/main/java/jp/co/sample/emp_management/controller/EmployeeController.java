@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jp.co.sample.emp_management.domain.Employee;
@@ -47,10 +48,14 @@ public class EmployeeController {
 	// ユースケース：従業員一覧を表示する
 	/////////////////////////////////////////////////////
 
-	@RequestMapping("/showList")
+	@RequestMapping(value="/showList")
 	public String showList(String employeeName,Model model,Integer page) {
 
 		List<Employee> employeeList = null;
+		
+		List<Employee> autoCompleteEmpList = employeeService.showList();
+		model.addAttribute("autoCompleteEmpList",autoCompleteEmpList);
+		System.out.println(autoCompleteEmpList);
 		
 		if(page == null) {
 			page =1;
@@ -58,13 +63,13 @@ public class EmployeeController {
 
 		//検索欄が空欄だった場合
 		if(employeeName == null ) {
-			employeeList = employeeService.showList();
+			employeeList = employeeService.showList();		
+
 		}
 		//名前によるあいまい検索が成功した場合、その結果を表示
 		else if(employeeName != null){
 			model.addAttribute("searchName", employeeName);
 			employeeList = employeeService.showListByLikeEmployeeName(employeeName);
-			System.out.println(employeeList);
 		}
 		
 		//検索結果が見つからなかった場合
@@ -73,11 +78,8 @@ public class EmployeeController {
 			employeeList = employeeService.showList();
 		}
 
-		model.addAttribute("employeeList",employeeList);
-		
 		Page<Employee> employeePage= employeeService.showPaging(page, SIZE, employeeList);
 		model.addAttribute("employeePage",employeePage);
-		System.out.println(employeePage.getContent());
 		model.addAttribute("employeePageContent",employeePage.getContent());
 		
 		return "employee/list";

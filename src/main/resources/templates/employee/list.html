@@ -21,13 +21,7 @@
     <![endif]-->
 </head>
 <script>
-	$(function() {
-		var arrayAutoComp = [ 'java', 'vue.js', 'react.js', 'C#', 'javascript' ];
-
-		$('#searchName').autocomplete({
-			source : arrayAutoComp
-		});
-	});
+console.log($('#datalist'))
 </script>
 <body>
 	<div class="container">
@@ -75,13 +69,20 @@
 
 		<!-- 従業員名のあいまい検索 -->
 		<div class="showByEmployeeName">
-			<form action="" th:action="@{/employee/showList}" method="post">
-				<label for="searchName">従業員名：</label> <input type="text"
-					name="employeeName" id="searchName" th:value="${searchName}"
-					autocomplete="name">
-				<datalist id="lt"></datalist>
-				<button>検索</button>
-			</form>
+			<fieldset>
+				<form action="" th:action="@{/employee/showList}" method="get">
+					<label for="searchName">従業員名：</label> 
+					<input type="text"
+						name="employeeName" id="searchName" th:value="${searchName}"
+						autocomplete="on" list="nameList">
+						
+					<datalist id="nameList">
+						<option th:each="employee:${autoCompleteEmpList}" th:value="${employee.name}"></option>
+					</datalist>
+					<button type="submit">検索</button>
+				</form>
+			</fieldset>
+
 			<hr>
 
 		</div>
@@ -128,20 +129,20 @@
 						<li th:class="${employeePage.first} ? 'disabled':''"
 							style="display: inline"><span th:if="${ employeePage.first}">前へ
 						</span> <a th:if="${not employeePage.first}"
-							th:href="@{/employee/showList(size=${employeePage.size},page=(${employeePage.number}),employeeName=${employeeName})}">前へ
+							th:href="@{/employee/showList(size=${employeePage.size},page=${employeePage.number},employeeName=${searchName})}">前へ
 						</a></li>
 						<li th:each="i : ${#numbers.sequence(1, employeePage.totalPages)}"
 							th:class="(${i}==${employeePage.number})? 'active' : ''"
 							style="display: inline"><span
 							th:if='${i}==${employeePage.number+1}' th:text='${i}'>1</span> <a
 							th:if='${i}!=${employeePage.number+1}'
-							th:href="@{/employee/showList(size=${employeePage.size}, page=${i},employeeName=${employeeName})}">
+							th:href="@{/employee/showList(size=${employeePage.size}, page=${i},employeeName=${searchName})}">
 								<span th:text='${i}'>1</span>
 						</a></li>
 						<li th:class="${employeePage.last} ? 'disabled':''"
 							style="display: inline"><span th:if="${employeePage.last}">次へ</span>
 							<a th:if="${not employeePage.last}"
-							th:href="@{/employee/showList(size=${employeePage.size}, page=${employeePage.number +2},employeeName=${employeeName})}">
+							th:href="@{/employee/showList(size=${employeePage.size}, page=${employeePage.number +2},employeeName=${searchName})}">
 								次へ</a></li>
 					</ul>
 				</div>
