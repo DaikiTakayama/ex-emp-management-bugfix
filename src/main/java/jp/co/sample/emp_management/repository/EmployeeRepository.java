@@ -1,8 +1,10 @@
 package jp.co.sample.emp_management.repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -40,6 +42,8 @@ public class EmployeeRepository {
 		employee.setDependentsCount(rs.getInt("dependents_count"));
 		return employee;
 	};
+	
+	
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
@@ -57,6 +61,7 @@ public class EmployeeRepository {
 
 		return developmentList;
 	}
+	
 	
 	/**
 	 * 名前のあいまい検索に該当する従業員一覧情報を入社日順で取得します.
@@ -101,4 +106,6 @@ public class EmployeeRepository {
 		String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
 		template.update(updateSql, param);
 	}
+	
+
 }
