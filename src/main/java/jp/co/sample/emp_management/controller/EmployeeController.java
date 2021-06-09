@@ -2,8 +2,8 @@ package jp.co.sample.emp_management.controller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
-import net.arnx.jsonic.JSON;
 
 /**
  * 従業員情報を操作するコントローラー.
@@ -31,6 +30,8 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 	
+	private static final int SIZE = 10;
+	
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
 	 * 
@@ -42,21 +43,43 @@ public class EmployeeController {
 	}
 	
 	
-
-
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員一覧を表示する
 	/////////////////////////////////////////////////////
-	/**
-	 * 従業員一覧画面を出力します.
-	 * 
-	 * @param model モデル
-	 * @return 従業員一覧画面
-	 */
+
 	@RequestMapping("/showList")
-	public String showList(Model model) {
-		List<Employee> employeeList = employeeService.showList();
-		model.addAttribute("employeeList", employeeList);
+	public String showList(String employeeName,Model model,Integer page) {
+
+		List<Employee> employeeList = null;
+		
+		if(page == null) {
+			page =1;
+		}
+
+		//検索欄が空欄だった場合
+		if(employeeName == null ) {
+			employeeList = employeeService.showList();
+		}
+		//名前によるあいまい検索が成功した場合、その結果を表示
+		else if(employeeName != null){
+			model.addAttribute("searchName", employeeName);
+			employeeList = employeeService.showListByLikeEmployeeName(employeeName);
+			System.out.println(employeeList);
+		}
+		
+		//検索結果が見つからなかった場合
+		if( employeeName != null  && employeeList.size() == 0) {
+			model.addAttribute("notFoundLikeName", "１件もありませんでした");
+			employeeList = employeeService.showList();
+		}
+
+		model.addAttribute("employeeList",employeeList);
+		
+		Page<Employee> employeePage= employeeService.showPaging(page, SIZE, employeeList);
+		model.addAttribute("employeePage",employeePage);
+		System.out.println(employeePage.getContent());
+		model.addAttribute("employeePageContent",employeePage.getContent());
+		
 		return "employee/list";
 	}
 	
@@ -65,7 +88,7 @@ public class EmployeeController {
     public String getAutoComplete(){
     	
     	List<Employee> employeeList= employeeService.showList();
-    	return JSON.encode(employeeList);
+    	return null;
         //List<String> nameList = getAutoCompleteService.getAllNameList();
         //return JSON.encode(nameList);
     }
@@ -111,4 +134,5 @@ public class EmployeeController {
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
 	}
+	
 }

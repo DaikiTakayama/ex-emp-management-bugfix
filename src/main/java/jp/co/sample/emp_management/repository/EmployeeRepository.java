@@ -1,8 +1,10 @@
 package jp.co.sample.emp_management.repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -40,6 +42,8 @@ public class EmployeeRepository {
 		employee.setDependentsCount(rs.getInt("dependents_count"));
 		return employee;
 	};
+	
+	
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
@@ -56,6 +60,24 @@ public class EmployeeRepository {
 		List<Employee> developmentList = template.query(sql, EMPLOYEE_ROW_MAPPER);
 
 		return developmentList;
+	}
+	
+	
+	/**
+	 * 名前のあいまい検索に該当する従業員一覧情報を入社日順で取得します.
+	 * 
+	 * @return 全従業員一覧 従業員が存在しない場合はサイズ0件の従業員一覧を返します
+	 */
+	public List<Employee> findByLikeEmployeeName(String name) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count "
+				+ "FROM employees where name like :name order by hire_date desc";
+		
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%"+ name +"%");
+	
+
+		List<Employee> employeeList = template.query(sql, param,EMPLOYEE_ROW_MAPPER);
+
+		return employeeList;
 	}
 
 	/**
@@ -84,4 +106,6 @@ public class EmployeeRepository {
 		String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
 		template.update(updateSql, param);
 	}
+	
+
 }

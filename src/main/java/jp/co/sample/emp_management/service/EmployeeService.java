@@ -1,8 +1,12 @@
 package jp.co.sample.emp_management.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +34,30 @@ public class EmployeeService {
 	public List<Employee> showList() {
 		List<Employee> employeeList = employeeRepository.findAll();
 		return employeeList;
+	}
+	
+	/**
+	 * 名前のあいまい検索に該当する従業員情報を取得します.
+	 * 
+	 * @return　従業員情報一覧
+	 */
+	public List<Employee> showListByLikeEmployeeName(String name) {
+		List<Employee> employeeList = employeeRepository.findByLikeEmployeeName(name);
+
+		return employeeList;
+	}
+	
+	public Page<Employee> showPaging(int page,int size,List<Employee> employeeList){
+		page--;
+	    int cnt = page * size;
+	    List<Employee> pagingEmployeeList;
+
+        int index = Math.min(cnt + size, employeeList.size());
+        pagingEmployeeList = employeeList.subList(cnt, index);
+
+		
+		Page<Employee> employeePage =new PageImpl<>(pagingEmployeeList,PageRequest.of(page,size),employeeList.size());
+		return employeePage;
 	}
 	
 	/**

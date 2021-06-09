@@ -54,6 +54,23 @@
 		<ol class="breadcrumb">
 			<li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員リスト</a></li>
 		</ol>
+		
+		<!-- 従業員名のあいまい検索 -->
+		<div class ="showByEmployeeName">
+			<form action="" th:action="@{/employee/showList}" method ="post" >
+				<label for="showName">従業員名：</label>
+				<input type="text" name="employeeName" id="showName" th:value="${searchName}">
+				<button>検索</button>
+			</form>
+			<hr>
+
+		</div>
+		
+		<!-- 検索結果が0件だった場合に表示  -->
+		<div class="notFoundLikeName" th:if="${notFoundLikeName}">
+			<span th:text="${notFoundLikeName}" style="color:red;">null</span>
+
+		</div>
 
 		<!-- table -->
 		<div class="row">
@@ -73,7 +90,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="employee : ${employeeList}">
+						<tr th:each="employee : ${employeePageContent}">
 							<td>
 								<a href="detail.html" th:href="@{'/employee/showDetail?id=' + ${employee.id}}">
 									<span th:text="${employee.name}">山田太郎</span>
@@ -88,6 +105,25 @@
 						</tr>
 					</tbody>
 				</table>
+				
+				<div th:if="${employeePage.totalPages > 0}" th:fragment='paginationbar'>
+					<ul>
+						<li th:class="${employeePage.first} ? 'disabled':''" style="display:inline">
+							<span th:if="${ employeePage.first}">前へ </span>
+							<a th:if="${not employeePage.first}" th:href="@{/employee/showList(size=${employeePage.size},page=(${employeePage.number}),employeeName=${employeeName})}">前へ </a>
+						</li>
+						<li th:each="i : ${#numbers.sequence(1, employeePage.totalPages)}"  th:class="(${i}==${employeePage.number})? 'active' : ''" style="display:inline">
+							<span th:if='${i}==${employeePage.number+1}' th:text='${i}'>1</span>
+							<a th:if='${i}!=${employeePage.number+1}' th:href="@{/employee/showList(size=${employeePage.size}, page=${i},employeeName=${employeeName})}">
+                        		<span th:text='${i}'>1</span>
+                    		</a>
+						</li>
+						<li th:class="${employeePage.last} ? 'disabled':''" style="display:inline">
+		                    <span th:if="${employeePage.last}">次へ</span>
+		                    <a th:if="${not employeePage.last}" th:href="@{/employee/showList(size=${employeePage.size}, page=${employeePage.number +2},employeeName=${employeeName})}"> 次へ</a>
+                		</li>
+					</ul>
+				</div>
 
 
 <!-- ここから下を編集する必要はありません -->
