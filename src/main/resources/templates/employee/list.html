@@ -54,6 +54,23 @@
 		<ol class="breadcrumb">
 			<li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員リスト</a></li>
 		</ol>
+		
+		<!-- 従業員名のあいまい検索 -->
+		<div class ="showByEmployeeName">
+			<form action="" th:action="@{/employee/showList}" method ="post" >
+				<label for="showName">従業員名：</label>
+				<input type="text" name="employeeName" id="showName" >
+				<button>検索</button>
+			</form>
+			<hr>
+
+		</div>
+		
+		<!-- 検索結果が0件だった場合に表示  -->
+		<div class="notFoundLikeName" th:if="${notFoundLikeName}">
+			<span th:text="${notFoundLikeName}" style="color:red;">null</span>
+
+		</div>
 
 		<!-- table -->
 		<div class="row">
