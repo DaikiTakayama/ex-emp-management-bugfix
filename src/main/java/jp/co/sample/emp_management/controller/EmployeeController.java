@@ -2,7 +2,6 @@ package jp.co.sample.emp_management.controller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,13 +47,40 @@ public class EmployeeController {
 	/**
 	 * 従業員一覧画面を出力します.
 	 * 
+	 * 
+	 * @param employeeName 検索する従業員名
 	 * @param model モデル
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("/showList")
-	public String showList(Model model) {
-		List<Employee> employeeList = employeeService.showList();
-		model.addAttribute("employeeList", employeeList);
+	public String showList(String employeeName,Model model) {
+
+		
+		List<Employee> employeeList = null;
+
+		//検索欄が空欄だった場合
+		if(employeeName == null ) {
+			employeeList = employeeService.showList();
+			model.addAttribute("employeeList",employeeList);
+			return "employee/list";
+		}
+		
+		employeeList = employeeService.showListByLikeEmployeeName(employeeName);
+		//検索結果が見つからなかった場合
+		if( employeeName != null  && employeeList.size() == 0) {
+			model.addAttribute("notFoundLikeName", "１件もありませんでした");
+			employeeList = employeeService.showList();
+			model.addAttribute("employeeList",employeeList);
+			return "employee/list";
+		}
+		
+		//名前によるあいまい検索が成功した場合、その結果を表示
+
+
+		employeeList = employeeService.showListByLikeEmployeeName(employeeName);
+
+		model.addAttribute("employeeList",employeeList);
+		
 		return "employee/list";
 	}
 
@@ -99,4 +125,5 @@ public class EmployeeController {
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
 	}
+	
 }
