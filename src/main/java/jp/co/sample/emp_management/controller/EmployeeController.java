@@ -1,14 +1,18 @@
 package jp.co.sample.emp_management.controller;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
@@ -28,6 +32,8 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 	
+	private static final int SIZE = 10;
+	
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
 	 * 
@@ -39,47 +45,42 @@ public class EmployeeController {
 	}
 	
 	
-
-
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員一覧を表示する
 	/////////////////////////////////////////////////////
-	/**
-	 * 従業員一覧画面を出力します.
-	 * 
-	 * 
-	 * @param employeeName 検索する従業員名
-	 * @param model モデル
-	 * @return 従業員一覧画面
-	 */
-	@RequestMapping("/showList")
-	public String showList(String employeeName,Model model) {
 
-		
+	@RequestMapping("/showList")
+	public String showList(String employeeName,Model model,Integer page) {
+
 		List<Employee> employeeList = null;
+		
+		if(page == null) {
+			page =1;
+		}
 
 		//検索欄が空欄だった場合
 		if(employeeName == null ) {
 			employeeList = employeeService.showList();
-			model.addAttribute("employeeList",employeeList);
-			return "employee/list";
+		}
+		//名前によるあいまい検索が成功した場合、その結果を表示
+		else if(employeeName != null){
+			model.addAttribute("searchName", employeeName);
+			employeeList = employeeService.showListByLikeEmployeeName(employeeName);
+			System.out.println(employeeList);
 		}
 		
-		employeeList = employeeService.showListByLikeEmployeeName(employeeName);
 		//検索結果が見つからなかった場合
 		if( employeeName != null  && employeeList.size() == 0) {
 			model.addAttribute("notFoundLikeName", "１件もありませんでした");
 			employeeList = employeeService.showList();
-			model.addAttribute("employeeList",employeeList);
-			return "employee/list";
 		}
-		
-		//名前によるあいまい検索が成功した場合、その結果を表示
-
-
-		employeeList = employeeService.showListByLikeEmployeeName(employeeName);
 
 		model.addAttribute("employeeList",employeeList);
+		
+		Page<Employee> employeePage= employeeService.showPaging(page, SIZE, employeeList);
+		model.addAttribute("employeePage",employeePage);
+		System.out.println(employeePage.getContent());
+		model.addAttribute("employeePageContent",employeePage.getContent());
 		
 		return "employee/list";
 	}
